@@ -24,24 +24,24 @@ struct ContentView: View {
                             .font(.system(size: 90))
                             .fontWeight(.heavy)
                     }
-                            .frame(width: 120, height: 120, alignment: .center)
-                            .cornerRadius(30)
-                            .onTapGesture {
-                                withAnimation{
-                                    if moves[index] == "" {
-                                        moves[index] = xTurn ? "X" : "O"
-                                        xTurn.toggle()
-                                    }
-                                }
+                    .frame(width: 120, height: 120, alignment: .center)
+                    .cornerRadius(30)
+                    .onTapGesture {
+                        withAnimation{
+                            if moves[index] == "" {
+                                moves[index] = xTurn ? "X" : "O"
+                                xTurn.toggle()
                             }
-                                .rotation3DEffect(.degrees(moves[index] == "" ? 180 : 0), axis: (0, 1, 0))
+                        }
+                    }
+                    .rotation3DEffect(.degrees(moves[index] == "" ? 180 : 0), axis: (0, 1, 0))
                 }
             }
         }
         .preferredColorScheme(.dark)
         .alert(isPresented: $gameOver){
             Alert(title: Text(winMessage), dismissButton: .destructive(Text("Play Again"),
-                action:{
+                                                                       action:{
                 withAnimation{
                     moves = Array(repeating: "", count: 9)
                     gameOver = false
@@ -59,7 +59,11 @@ struct ContentView: View {
         checkLine(a: 2, b: 5, c: 8)
         checkLine(a: 0, b: 4, c: 8)
         checkLine(a: 2, b: 4, c: 6)
+        if !(gameOver || moves.contains("")){
+            winMessage = "Cat's Game!"
+            gameOver = true
         }
+    }
     private func checkLine(a: Int, b: Int, c: Int){
         if moves[a] != "" && moves[a] == moves[b] && moves[b] == moves[c] {
             winMessage = "\(moves[a]) Wins!"
